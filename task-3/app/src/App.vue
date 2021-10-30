@@ -37,7 +37,6 @@ export default class App extends Vue {
 
   private calledCalculateData(value: object) {
     this.showResults = false;
-    this.$nextTick();
     this.dataForCalculate = value;
     this.showResults = true;
   }

@@ -62,9 +62,17 @@ export default class SetGoal extends Vue {
   private wayWithTwoIntermediary: boolean = false;
 
   private calculateData() {
+    let connectFrom = this.connectFrom;
+    if (connectFrom === 'us') {
+      connectFrom = 'usa';
+    }
+    let connectTo = this.connectTo;
+    if (connectTo === 'us') {
+      connectTo = 'usa';
+    }
     this.$emit('calculateData', {
-      connectFrom: this.connectFrom,
-      connectTo: this.connectTo,
+      connectFrom,
+      connectTo,
       allWay: this.allWay,
       oneWay: this.oneWay,
       wayWithOneIntermediary: this.wayWithOneIntermediary,

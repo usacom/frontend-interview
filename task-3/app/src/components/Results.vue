@@ -36,8 +36,6 @@
 
           <span class="badge bg-primary">{{path['des']}}</span>
         </div>
-
-        <div></div>
       </div>
     </div>
     <div class="mt-3 mb-3 row justify-content-center">
@@ -50,27 +48,32 @@
 <script lang="ts">
 import JwPagination from 'jw-vue-pagination';
 import { Component, Prop, Vue } from 'vue-property-decorator';
-
+type data = {
+  connectFrom: string,
+  connectTo: string,
+  allWay: boolean,
+  oneWay: boolean,
+  wayWithOneIntermediary: boolean,
+  wayWithTwoIntermediary: boolean,
+};
 @Component({
   components: {
     JwPagination,
   },
 })
-
 export default class Result extends Vue {
-  @Prop() private Data!: object;
+  @Prop() private Data!: data;
   @Prop() private Companys!: object;
-  private paths: object[] = [];
   private pageOfItems: object[] = [];
 
 
   get connectFrom() {
-    return this.Data['connectFrom'];
+    return this.Data.connectFrom;
   }
   get connectTo() {
-    return this.Data['connectTo'];
+    return this.Data.connectTo;
   }
-  get simpleWay(){
+  get simpleWay() {
     let paths: any[] = [];
     Object.entries(this.Companys).forEach((company) => {
       company[1].forEach((path: any) => {
@@ -86,7 +89,7 @@ export default class Result extends Vue {
         }
       });
     });
-    paths.sort((pathA, pathB) => pathA.cost - pathB.cost);
+    paths.sort((path1, path2) => path1.cost - path2.cost);
     return paths;
   }
 
@@ -114,7 +117,7 @@ export default class Result extends Vue {
         });
       });
     });
-    paths.sort((pathA, pathB) => pathA.cost - pathB.cost);
+    paths.sort((path1, path2) => path1.cost - path2.cost);
     return paths;
   }
 
@@ -151,7 +154,7 @@ export default class Result extends Vue {
         });
       });
     });
-    paths.sort((pathA, pathB) => pathA.cost - pathB.cost);
+    paths.sort((path1, path2) => path1.cost - path2.cost);
     return paths;
   }
 
@@ -162,53 +165,53 @@ export default class Result extends Vue {
   }
 
   get showWay() {
-    if (this.Data['allWay'] === true) {
+    if (this.Data.allWay === true) {
       return this.allWay;
     }
-    if (this.Data['oneWay'] === true
-      && this.Data['wayWithOneIntermediary'] === true
-      && this.Data['wayWithTwoIntermediary'] === true) {
+    if (this.Data.oneWay === true
+      && this.Data.wayWithOneIntermediary === true
+      && this.Data.wayWithTwoIntermediary === true) {
       return this.allWay;
     }
-    if (this.Data['oneWay'] === true
-      && this.Data['wayWithOneIntermediary'] !== true
-      && this.Data['wayWithTwoIntermediary'] !== true) {
+    if (this.Data.oneWay === true
+      && this.Data.wayWithOneIntermediary !== true
+      && this.Data.wayWithTwoIntermediary !== true) {
       return this.simpleWay;
     }
-    if (this.Data['oneWay'] === true
-      && this.Data['wayWithOneIntermediary'] === true
-      && this.Data['wayWithTwoIntermediary'] !== true) {
+    if (this.Data.oneWay === true
+      && this.Data.wayWithOneIntermediary === true
+      && this.Data.wayWithTwoIntermediary !== true) {
       let paths: any[] = this.simpleWay.concat(...this.withOneIntermediary);
       paths.sort((pathA, pathB) => pathA.cost - pathB.cost);
       return paths;
     }
-    if (this.Data['oneWay'] === true
-      && this.Data['wayWithOneIntermediary'] !== true
-      && this.Data['wayWithTwoIntermediary'] === true) {
+    if (this.Data.oneWay === true
+      && this.Data.wayWithOneIntermediary !== true
+      && this.Data.wayWithTwoIntermediary === true) {
       let paths: any[] = this.simpleWay.concat(...this.withTwoIntermediary);
       paths.sort((pathA, pathB) => pathA.cost - pathB.cost);
       return paths;
     }
-    if (this.Data['oneWay'] !== true
-      && this.Data['wayWithOneIntermediary'] === true
-      && this.Data['wayWithTwoIntermediary'] === true) {
+    if (this.Data.oneWay !== true
+      && this.Data.wayWithOneIntermediary === true
+      && this.Data.wayWithTwoIntermediary === true) {
       let paths: any[] = this.withOneIntermediary.concat(...this.withTwoIntermediary);
       paths.sort((pathA, pathB) => pathA.cost - pathB.cost);
       return paths;
     }
-    if (this.Data['oneWay'] !== true
-      && this.Data['wayWithOneIntermediary'] === true
-      && this.Data['wayWithTwoIntermediary'] !== true) {
+    if (this.Data.oneWay !== true
+      && this.Data.wayWithOneIntermediary === true
+      && this.Data.wayWithTwoIntermediary !== true) {
       return this.withOneIntermediary;
     }
-    if (this.Data['oneWay'] !== true
-      && this.Data['wayWithOneIntermediary'] !== true
-      && this.Data['wayWithTwoIntermediary'] === true) {
+    if (this.Data.oneWay !== true
+      && this.Data.wayWithOneIntermediary !== true
+      && this.Data.wayWithTwoIntermediary === true) {
       return this.withTwoIntermediary;
     }
     return [];
   }
-  private onChangePage(pageOfItems: any[]){
+  private onChangePage(pageOfItems: any[]) {
     this.pageOfItems = pageOfItems;
   }
 }
