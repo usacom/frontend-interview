@@ -4,20 +4,39 @@
     <div class="card" v-for="(path, index) in pageOfItems" :key="index">
       <div class="card-body row justify-content-center">
         <div class="col-2">
-          cost {{path['cost']}}$
+          full cost: <br>
+          <span class="badge rounded-pill bg-info text-dark">{{path['cost']}}$</span>
         </div>
         <div class="col">
-          {{path['src']}}<br>
-          ({{path['name']}})<br>
-          ->
+          <span class="badge bg-primary">{{path['src']}}</span>
+          <span class="position-relative">
+            ({{path['name']}})->
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+              {{path['price']}}$
+            </span>
+          </span>
+          <span v-if="!!(Object.keys(path).indexOf('way')+1)">
+            <span class="badge bg-primary">{{path['way']}}</span>
+            <span class="position-relative">
+              ({{path['way_name']}})->
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+              {{path['price2']}}$
+              </span>
+            </span>
+          </span>
+          <span v-if="!!(Object.keys(path).indexOf('way2')+1)">
+            <span class="badge bg-primary">{{path['way2']}}</span>
+            <span class="position-relative">
+              ({{path['des_name']}})->
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+              {{path['price3']}}$
+              </span>
+            </span>
+          </span>
+
+          <span class="badge bg-primary">{{path['des']}}</span>
         </div>
-        <div v-if="!!(Object.keys(path).indexOf('way')+1)" class="col-2">
-          {{path['way']}} <br>
-          ({{path['way_name']}}) <br>
-          ->
-        </div>
-        <!-- <div class="col-2">us</div> -->
-        <div class="col-2">{{path['des']}}</div>
+
         <div></div>
       </div>
     </div>
@@ -62,6 +81,7 @@ export default class Result extends Vue {
                 src: path.src,
                 des: path.des,
                 cost: path.price,
+                price: path.price,
               });
         }
       });
